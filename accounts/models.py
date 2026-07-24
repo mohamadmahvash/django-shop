@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser
-from django.contrib.auth.models import Group
 
 from .managers import UserManager
 
@@ -32,7 +31,7 @@ class User(AbstractBaseUser):
 
 
 class OtpCode(models.Model):
-    phone_number = models.CharField()
+    phone_number = models.CharField(max_length=11)
     code = models.PositiveSmallIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 

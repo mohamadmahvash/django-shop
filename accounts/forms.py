@@ -41,3 +41,21 @@ class UserRegistrationForm(forms.Form):
     full_name = forms.CharField(label='Full Name')
     phone_number = forms.CharField(label='Phone Number', max_length=11)
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        user = User.objects.filter(email=email).exists()
+        if user:
+            raise ValidationError('This Email already exist')
+        return email
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data['phone_number']
+        user = User.objects.filter(phone_number=phone_number).exists()
+        if user:
+            raise ValidationError('This Phone Number already exist')
+        return phone_number
+
+
+class VerifyCodeForm(forms.Form):
+    code = forms.IntegerField(label='Verification Code')
