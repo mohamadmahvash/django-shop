@@ -57,5 +57,10 @@ class UserRegistrationForm(forms.Form):
         return phone_number
 
 
+class UserLoginForm(forms.Form):
+    phone_number = forms.CharField(label='Phone Number', max_length=11)
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+
 class VerifyCodeForm(forms.Form):
     code = forms.IntegerField(label='Verification Code')
