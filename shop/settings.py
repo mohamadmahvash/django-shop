@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home.apps.HomeConfig',
     'accounts.apps.AccountsConfig',
-    'products.apps.ProductsConfig'
+    'products.apps.ProductsConfig',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'shop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / 'templates' ],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,3 +128,21 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'accounts.authenticate.PhoneNumberBackend'
 ]
+
+# ARVAN CLOUD OBJECT STORAGES
+
+STORAGES = {
+    'default': {
+        'BACKEND': 'storages.backends.s3.S3Storage',
+        'OPTIONS': {
+            'access_key': '24be9766-eace-44ee-8d0d-39dc12bb133d',
+            'secret_key': '155e87df208b30bd9627113ffc2d8bbc9651f3395b72d031fedce48608537af5',
+            'endpoint_url': 'https://s3.ir-tbz-sh1.arvanstorage.ir',
+            'bucket_name': 'mahvash-shop',
+            'file_overwrite': False,
+        }
+    },
+    'staticfiles': {
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    }
+}
