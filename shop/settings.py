@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -130,7 +130,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # ARVAN CLOUD OBJECT STORAGES
-
 STORAGES = {
     'default': {
         'BACKEND': 'storages.backends.s3.S3Storage',
@@ -146,3 +145,9 @@ STORAGES = {
         'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'
     }
 }
+
+# BUCKET MANAGER
+AWS_SERVICE_NAME = 's3'
+AWS_ACCESS_KEY_ID = '24be9766-eace-44ee-8d0d-39dc12bb133d'
+AWS_SECRET_ACCESS_KEY = '155e87df208b30bd9627113ffc2d8bbc9651f3395b72d031fedce48608537af5'
+AWS_S3_ENDPOINT_URL = 'https://s3.ir-tbz-sh1.arvanstorage.ir'
