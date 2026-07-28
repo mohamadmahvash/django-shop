@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th class="text-center">Size</th>
+            <th class="text-center">Download</th>
+            <th class="text-center">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for obj in objects %}
+            <tr>
+                <th>{{ forloop.counter }}</th>
+                <th>{{ obj.Key }}</th>
+                <th class="text-center">{{ obj.Size|filesizeformat }}</th>
+                <th class="text-center">Download</th>
+                <th class="text-center">
+                    <a href="{% url 'home:delete_object_bucket' obj.Key %}">
+                        <i class=" fa fa-trash-o" style="color: red"  aria-hidden="true"></i>
+                    </a>
+
+                </th>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+{% endblock %}

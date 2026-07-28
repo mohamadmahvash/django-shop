@@ -129,15 +129,22 @@ AUTHENTICATION_BACKENDS = [
     'accounts.authenticate.PhoneNumberBackend'
 ]
 
+# BUCKET MANAGER
+AWS_SERVICE_NAME = 's3'
+AWS_ACCESS_KEY_ID = '24be9766-eace-44ee-8d0d-39dc12bb133d'
+AWS_SECRET_ACCESS_KEY = '155e87df208b30bd9627113ffc2d8bbc9651f3395b72d031fedce48608537af5'
+AWS_S3_ENDPOINT_URL = 'https://s3.ir-tbz-sh1.arvanstorage.ir'
+AWS_BUCKET_NAME = 'mahvash-shop'
+
 # ARVAN CLOUD OBJECT STORAGES
 STORAGES = {
     'default': {
         'BACKEND': 'storages.backends.s3.S3Storage',
         'OPTIONS': {
-            'access_key': '24be9766-eace-44ee-8d0d-39dc12bb133d',
-            'secret_key': '155e87df208b30bd9627113ffc2d8bbc9651f3395b72d031fedce48608537af5',
-            'endpoint_url': 'https://s3.ir-tbz-sh1.arvanstorage.ir',
-            'bucket_name': 'mahvash-shop',
+            'access_key': AWS_ACCESS_KEY_ID,
+            'secret_key': AWS_SECRET_ACCESS_KEY,
+            'endpoint_url': AWS_S3_ENDPOINT_URL,
+            'bucket_name': AWS_BUCKET_NAME,
             'file_overwrite': False,
         }
     },
@@ -145,9 +152,3 @@ STORAGES = {
         'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'
     }
 }
-
-# BUCKET MANAGER
-AWS_SERVICE_NAME = 's3'
-AWS_ACCESS_KEY_ID = '24be9766-eace-44ee-8d0d-39dc12bb133d'
-AWS_SECRET_ACCESS_KEY = '155e87df208b30bd9627113ffc2d8bbc9651f3395b72d031fedce48608537af5'
-AWS_S3_ENDPOINT_URL = 'https://s3.ir-tbz-sh1.arvanstorage.ir'
