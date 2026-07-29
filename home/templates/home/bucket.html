@@ -17,10 +17,14 @@
                 <th>{{ forloop.counter }}</th>
                 <th>{{ obj.Key }}</th>
                 <th class="text-center">{{ obj.Size|filesizeformat }}</th>
-                <th class="text-center">Download</th>
+                <th class="text-center">
+                    <a href="{% url 'home:download_object_bucket' obj.Key %}">
+                        <i class="fa fa-download" style="color: black" aria-hidden="true"></i>
+                    </a>
+                </th>
                 <th class="text-center">
                     <a href="{% url 'home:delete_object_bucket' obj.Key %}">
-                        <i class=" fa fa-trash-o" style="color: red"  aria-hidden="true"></i>
+                        <i class=" fa fa-trash-o" style="color: red" aria-hidden="true"></i>
                     </a>
 
                 </th>

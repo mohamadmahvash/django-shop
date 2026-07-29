@@ -17,8 +17,6 @@ class BucketHomeView(View):
 
     def get(self, request):
         objects = tasks.get_all_bucket_objects()
-        # print("="*100)
-        # print(objects)
         return render(request, self.template_name, {'objects': objects})
 
 
@@ -26,6 +24,13 @@ class DeleteBucketObjectView(View):
     def get(self, request, key):
         tasks.delete_object_task.delay(key)
         messages.success(request, 'Object deleted successfully', extra_tags='info')
+        return redirect('home:bucket')
+
+
+class DownloadBucketObjectView(View):
+    def get(self, request, key):
+        tasks.download_object_task.delay(key)
+        messages.success(request, 'Object downloaded successfully', extra_tags='info')
         return redirect('home:bucket')
 
 
