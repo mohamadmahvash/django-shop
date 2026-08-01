@@ -3,21 +3,22 @@ from django.views import View
 from django.contrib import messages
 
 from utils import IsAdminUserMixin
-from products.models import Product , Category
+from products.models import Product, Category
+from orders.forms import CartAddForm
 from . import tasks
 
 
 class HomeView(View):
-    def get(self, request , category_slug=None):
+    def get(self, request, category_slug=None):
         products = Product.objects.filter(available=True)
         categories = Category.objects.filter(is_sub=False)
         if category_slug:
             category = Category.objects.get(slug=category_slug)
             products = category.products.all()
-        return render(request, 'home/index.html', {'products': products , 'categories': categories})
+        return render(request, 'home/index.html', {'products': products, 'categories': categories})
 
 
-class BucketHomeView(IsAdminUserMixin,View):
+class BucketHomeView(IsAdminUserMixin, View):
     template_name = 'home/bucket.html'
 
     def get(self, request):
@@ -25,14 +26,14 @@ class BucketHomeView(IsAdminUserMixin,View):
         return render(request, self.template_name, {'objects': objects})
 
 
-class DeleteBucketObjectView(IsAdminUserMixin,View):
+class DeleteBucketObjectView(IsAdminUserMixin, View):
     def get(self, request, key):
         tasks.delete_object_task.delay(key)
         messages.success(request, 'Object deleted successfully', extra_tags='info')
         return redirect('home:bucket')
 
 
-class DownloadBucketObjectView(IsAdminUserMixin,View):
+class DownloadBucketObjectView(IsAdminUserMixin, View):
     def get(self, request, key):
         tasks.download_object_task.delay(key)
         messages.success(request, 'Object downloaded successfully', extra_tags='info')
@@ -40,6 +41,8 @@ class DownloadBucketObjectView(IsAdminUserMixin,View):
 
 
 class ProductDetailView(View):
+    form_class = CartAddForm
+
     def get(self, request, slug):
         product = get_object_or_404(Product, slug=slug)
-        return render(request, 'home/detail.html', {'product': product})
+        return render(request, 'home/detail.html', {'product': product, 'form': self.form_class})

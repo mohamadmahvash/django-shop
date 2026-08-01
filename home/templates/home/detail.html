@@ -7,5 +7,13 @@
     <p>{{ product.price }} Toman</p>
     <img src="{{ product.image.url }}" alt="{{ product.slug }}" style="width: 50%; height: 50%;">
     <p>{{ product.description }}</p>
+    <br><br>
 
+    {% if request.user.is_authenticated %}
+    <form action="{% url 'orders:cart_add' product.id %}" method="post" style="display: ruby">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Add to cart" class="btn btn-success">
+    </form>
+    {% endif %}
 {% endblock content %}
