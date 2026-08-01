@@ -3,14 +3,18 @@ from django.views import View
 from django.contrib import messages
 
 from utils import IsAdminUserMixin
-from products.models import Product
+from products.models import Product , Category
 from . import tasks
 
 
 class HomeView(View):
-    def get(self, request):
+    def get(self, request , category_slug=None):
         products = Product.objects.filter(available=True)
-        return render(request, 'home/index.html', {'products': products})
+        categories = Category.objects.filter(is_sub=False)
+        if category_slug:
+            category = Category.objects.get(slug=category_slug)
+            products = category.products.all()
+        return render(request, 'home/index.html', {'products': products , 'categories': categories})
 
 
 class BucketHomeView(IsAdminUserMixin,View):
