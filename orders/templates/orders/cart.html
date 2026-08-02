@@ -9,22 +9,28 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Price</th>
-            <th scope="col">Total Price</th>
+            <th class="text-center" scope="col">Quantity</th>
+            <th class="text-center" scope="col">Price</th>
+            <th class="text-center" scope="col">Total</th>
+            <th class="text-center">Delete</th>
         </tr>
         </thead>
         <tbody>
         {% for item in cart %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ item.product_name }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.price|intcomma }}</td>
-                <td>{{ item.total_price|intcomma }}</td>
+                <td>{{ item.product }}</td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-center">{{ item.price|intcomma }}</td>
+                <td class="text-center">{{ item.total_price|intcomma }}</td>
+                <td class="text-center">
+                    <a href="{% url 'orders:cart_delete' item.product.id %}">
+                        <i class=" fa fa-trash-o" style="color: red" aria-hidden="true"></i>
+                    </a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
+    <p><b>Total Price: {{ cart.get_total_price|intcomma }}</b></p>
 {% endblock %}
