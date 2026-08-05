@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-
-    #local apps
+    # local apps
     'home.apps.HomeConfig',
     'accounts.apps.AccountsConfig',
     'products.apps.ProductsConfig',
@@ -162,3 +161,8 @@ STORAGES = {
         'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'
     }
 }
+
+# ZARINPAL PAYMENT
+ZP_API_REQUEST = 'https://payment.zarinpal.com/pg/v4/payment/request.json'
+ZP_API_VERIFY = 'https://payment.zarinpal.com/pg/v4/payment/verify.json'
+ZP_MERCHANT_ID = ''

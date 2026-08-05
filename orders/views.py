@@ -1,6 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+from django.conf import settings
+from django.contrib import messages
+import requests
+import json
 
 from products.models import Product
 from .cart import Cart
@@ -48,3 +52,61 @@ class OrderCreateView(LoginRequiredMixin, View):
                                      price=item['price'], quantity=item['quantity'])
         cart.clear()
         return redirect("orders:order_detail", order.id)
+
+
+class OrderPaymentView(LoginRequiredMixin, View):
+    def get(self, request, order_id):
+        order = get_object_or_404(Order, id=order_id)
+        request.session["order_pay"] = {"order_id": order.id}
+
+        zp_req_header = {'accept': 'application/json', 'content-type': 'application/json'}
+        zp_req_data = {
+            'merchant_id': settings.ZP_MERCHANT_ID,
+            'amount': order.get_total_price(),
+            'currency': 'IRR',
+            'description': f'user:{order.user} - time:{order.updated}',
+            'callback_url': '***https://test.ir/orders/verify/***',
+            'metadata': {
+                'mobile': f'{request.user.phone_number}',
+                'email': f'{request.user.email}',
+            }
+        }
+        zp_req = requests.post(url=settings.ZP_API_REQUEST, data=json.dumps(zp_req_data), headers=zp_req_header)
+        if zp_req.json()["data"]["code"] == 100:
+            zp_authority = zp_req.json()["data"]["authority"]
+            return redirect(f"https://payment.zarinpal.com/pg/StartPay/{zp_authority}")
+        else:
+            messages.error(request, 'Error, transaction aborted/ something else went wrong..!'
+                           , extra_tags='danger')
+            return redirect("home:home")
+
+
+class OrderVerifyPaymentView(LoginRequiredMixin, View):
+    def get(self, request):
+        order_id = request.session["order_pay"]["order_id"]
+        order = get_object_or_404(Order, id=order_id)
+        zp_authority = request.GET.get("Authority")
+        zp_status = request.GET.get("Status")
+        if zp_status == "OK":
+            zp_req_header = {'accept': 'application/json', 'content-type': 'application/json'}
+            zp_req_data = {
+                'merchant_id': settings.ZP_MERCHANT_ID,
+                'amount': order.get_total_price(),
+                'authority': zp_authority,
+            }
+            zp_verify_req = requests.post(url=settings.ZP_API_VERIFY,
+                                          data=json.dumps(zp_req_data), headers=zp_req_header)
+            if zp_verify_req.json()["data"]["code"] == 100:
+                order.paid = True
+                order.save()
+                messages.success(request, 'your payment was successfully', extra_tags='success')
+                return redirect("home:home")
+            else:
+                zp_error_code = zp_verify_req.json()["errors"]["code"]
+                zp_error_message = zp_verify_req.json()["errors"]["message"]
+                messages.error(request, f'Error{zp_error_code}, {zp_error_message}', extra_tags='danger')
+                return redirect("home:home")
+        else:
+            messages.error(request, 'Error, transaction aborted/ something else went wrong..!'
+                           , extra_tags='danger')
+            return redirect("home:home")
