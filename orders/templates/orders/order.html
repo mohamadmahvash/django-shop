@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block content %}
+
+    <h3>Checkout</h3>
+    <p>Total: {{ order.get_total_price|intcomma }}</p>
+
+{% endblock content %}
