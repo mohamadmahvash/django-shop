@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -8,8 +9,8 @@ import json
 
 from products.models import Product
 from .cart import Cart
-from .forms import CartAddForm
-from .models import Order, OrderItem
+from .forms import CartAddForm, CouponApplyForm
+from .models import Order, OrderItem, Coupon
 
 
 class CartView(View):
@@ -38,9 +39,11 @@ class CartDeleteView(LoginRequiredMixin, View):
 
 
 class OrderDetailView(LoginRequiredMixin, View):
+    form_class = CouponApplyForm
+
     def get(self, request, order_id):
         order = get_object_or_404(Order, id=order_id)
-        return render(request, 'orders/order.html', {'order': order})
+        return render(request, 'orders/order.html', {'order': order, 'form': self.form_class})
 
 
 class OrderCreateView(LoginRequiredMixin, View):
@@ -110,3 +113,23 @@ class OrderVerifyPaymentView(LoginRequiredMixin, View):
             messages.error(request, 'Error, transaction aborted/ something else went wrong..!'
                            , extra_tags='danger')
             return redirect("home:home")
+
+
+class CouponApplyView(LoginRequiredMixin, View):
+    form_class = CouponApplyForm
+
+    def post(self, request, order_id):
+        now = timezone.now()
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            try:
+                coupon = Coupon.objects.get(code__exact=cd['code'], valid_from__lte=now, valid_to__gte=now)
+            except Coupon.DoesNotExist:
+                messages.warning(request, 'this coupon does not exist', extra_tags='warning')
+                return redirect("orders:order_detail", order_id)
+            order = Order.objects.get(id=order_id)
+            order.discount = coupon.discount
+            order.save()
+            messages.success(request, f'{coupon.discount}% discount applied', extra_tags='success')
+        return redirect("orders:order_detail", order_id)

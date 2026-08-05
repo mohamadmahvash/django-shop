@@ -35,5 +35,6 @@
     <p><b>Total Price: {{ cart.get_cart_total_price|intcomma }}</b></p>
 
     <br><br>
-    <a href="{% url 'orders:order_create' %}" class="btn btn-primary">checkout</a>
+    <a href="{% url 'orders:order_create' %}"
+       class="btn btn-primary{% for item in cart %} {% empty %} disabled {% endfor %}">checkout</a>
 {% endblock %}

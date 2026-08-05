@@ -7,6 +7,14 @@
     <h3>Checkout</h3>
     <p>Total: {{ order.get_total_price|intcomma }}</p>
 
-    <a href="{% url 'orders:order_payment' order.id %}" class="btn btn-success">Payment</a>
+    <form action="{% url 'orders:coupon_apply' order.id %}" method="post" style="display: ruby">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Apply" class="btn btn-success">
+    </form>
+
+    <br>
+    <br>
+    <a href="{% url 'orders:order_payment' order.id %}" class="btn btn-info">Payment</a>
 
 {% endblock content %}
