@@ -23,7 +23,7 @@ class Order(models.Model):
         if self.discount:
             discount_price = (self.discount / 100) * total
             total -= discount_price
-        return total
+        return int(total)
 
 
 class OrderItem(models.Model):
