@@ -6,7 +6,7 @@
     <small>{{ product.created }}</small>
     <p>{{ product.price|intcomma }} Toman</p>
     <img src="{{ product.image.url }}" alt="{{ product.slug }}" style="width: 50%; height: 50%;">
-    <p>{{ product.description }}</p>
+    <p>{{ product.description|safe }}</p>
     <br><br>
 
     {% if request.user.is_authenticated %}

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Third-party apps
     'storages',
     'django_celery_beat',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -166,3 +167,10 @@ STORAGES = {
 ZP_API_REQUEST = 'https://payment.zarinpal.com/pg/v4/payment/request.json'
 ZP_API_VERIFY = 'https://payment.zarinpal.com/pg/v4/payment/verify.json'
 ZP_MERCHANT_ID = ''
+#
+# # CKEDITOR
+CKEDITOR_CONFIGS ={
+    "default" :{
+        "toolbar": "full",
+    }
+}
