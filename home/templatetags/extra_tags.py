@@ -1,9 +1,11 @@
 from django import template
 from django.utils import timezone
+import jdatetime
 
 register = template.Library()
 
 
+# FILTERS
 @register.filter
 def divide_thousand(value):
     prices = (
@@ -34,3 +36,16 @@ def timesince_fa(value, default='همین الان'):
         if period >= 1:
             return f"{period:.0f} {unit}  قبل"
     return default
+
+
+# TAGS
+@register.simple_tag
+def convert_to_shamsi(date):
+    shamsi = jdatetime.datetime.fromgregorian(date=date)
+    return shamsi.strftime("%Y/%m/%d , %H:%M:%S")
+
+
+@register.inclusion_tag("home/categories_inclusion.html", takes_context=True)
+def load_categories(context, categories):
+    request = context['request']
+    return {"categories": categories}

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load extra_tags %}
 
 {% block content %}
     <table class="table">
@@ -7,6 +8,7 @@
             <th>#</th>
             <th>Name</th>
             <th class="text-center">Size</th>
+            <th class="text-center">Last Modified</th>
             <th class="text-center">Download</th>
             <th class="text-center">Delete</th>
         </tr>
@@ -17,6 +19,7 @@
                 <th>{{ forloop.counter }}</th>
                 <th>{{ obj.Key }}</th>
                 <th class="text-center">{{ obj.Size|filesizeformat }}</th>
+                <th class="text-center">{% convert_to_shamsi obj.LastModified %}</th>
                 <th class="text-center">
                     <a href="{% url 'home:download_object_bucket' obj.Key %}">
                         <i class="fa fa-download" style="color: black" aria-hidden="true"></i>
