@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .forms import UserChangeForm, UserCreationForm
@@ -33,6 +34,14 @@ class UserAdmin(BaseUserAdmin):
         if not is_superuser:
             form.base_fields["is_superuser"].disabled = True
         return form
+
+    def response_change(self, request, obj):
+        if '_saveupper' in request.POST:
+            obj.full_name = obj.full_name.upper()
+            obj.save()
+            self.message_user(request, "full name save uppercase!", "success")
+            return redirect("admin:accounts_user_changelist")
+        return super().response_change(request, obj)
 
 
 admin.site.register(User, UserAdmin)
