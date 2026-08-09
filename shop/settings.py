@@ -28,6 +28,9 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+# SITE ID
+SITE_ID = 1
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -36,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sitemaps',
+    'django.contrib.sites',
 
     # local apps
     'home.apps.HomeConfig',
@@ -169,8 +174,8 @@ ZP_API_VERIFY = 'https://payment.zarinpal.com/pg/v4/payment/verify.json'
 ZP_MERCHANT_ID = ''
 #
 # # CKEDITOR
-CKEDITOR_CONFIGS ={
-    "default" :{
+CKEDITOR_CONFIGS = {
+    "default": {
         "toolbar": "full",
     }
 }
