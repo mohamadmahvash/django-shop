@@ -5,14 +5,16 @@
 
     {% load_categories categories %}
     <br><br>
-
-    {% for product in products %}
-        <div class="card" style="width: 24%; display: inline-block">
-            <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" alt="{{ product.slug }} image"
-                                                          class="card-img-top"></a>
-            <div class="card-body">
-                <a href="{{ product.get_absolute_url }}" class="card-title">{{ product.name }}</a>
+    <div class="row">
+        {% for product in products %}
+            <div class="card col-md-3 mb-4">
+                <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}"
+                                                              alt="{{ product.slug }}"
+                                                              class="card-img-top product-img"></a>
+                <div class="card-body text-center">
+                    <a href="{{ product.get_absolute_url }}" class="card-title red">{{ product.name }}</a>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% endblock content %}

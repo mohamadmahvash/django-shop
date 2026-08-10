@@ -3,3 +3,9 @@
     margin-bottom: 20px;
     background-color: #e9ecef;
 }
+
+.product-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
