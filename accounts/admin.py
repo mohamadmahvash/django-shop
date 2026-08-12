@@ -12,13 +12,12 @@ class UserAdmin(BaseUserAdmin):
 
     list_display = ["email", "phone_number", "is_admin", "last_login"]
     list_filter = ["is_admin"]
-    readonly_fields = ["last_login"]
 
-    fieldsets = [
-        [None, {"fields": ["full_name", "email", "phone_number", "password"]}],
-        ["Permissions",
-         {"fields": ["is_active", "is_admin", "is_superuser", "last_login", "groups", "user_permissions"]}]
-    ]
+    # fieldsets = [
+    #     [None, {"fields": ["full_name", "email", "phone_number", "password"]}],
+    #     ["Permissions",
+    #      {"fields": ["is_active", "is_admin", "is_superuser", "last_login", "groups", "user_permissions"]}]
+    # ]
 
     add_fieldsets = [
         [None, {"fields": ["full_name", "email", "phone_number", "password1", "password2"]}],
@@ -28,12 +27,56 @@ class UserAdmin(BaseUserAdmin):
     ordering = ["full_name"]
     filter_horizontal = ["groups", "user_permissions"]
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
-        is_superuser = request.user.is_superuser
-        if not is_superuser:
-            form.base_fields["is_superuser"].disabled = True
-        return form
+    def get_fieldsets(self, request, obj=None):
+
+        if request.user.is_superuser:
+            return (
+                (None, {
+                    "fields": (
+                        "full_name",
+                        "email",
+                        "phone_number",
+                        "password",
+                    )
+                }),
+                ("Permissions", {
+                    "fields": (
+                        "is_active",
+                        "is_admin",
+                        "last_login",
+                        "is_superuser",
+                        "groups",
+                        "user_permissions",
+                    )
+                }),
+            )
+
+        return (
+            (None, {
+                "fields": (
+                    "full_name",
+                    "email",
+                    "phone_number",
+                    "password",
+                )
+            }),
+            ("Permissions", {
+                "fields": (
+                    "is_active",
+                    "is_admin",
+                    "last_login",
+                    "is_superuser",
+                )
+            }),
+        )
+
+    def get_readonly_fields(self, request, obj=None):
+        readonly = ["last_login"]
+
+        if not request.user.is_superuser:
+            readonly.append("is_superuser")
+
+        return readonly
 
     def response_change(self, request, obj):
         if '_saveupper' in request.POST:
