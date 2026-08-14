@@ -2,7 +2,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from .models import User, OtpCode
+from .models import User, OtpCode, Avatar
+from .validators import avatar_validator, process_image_validator
 
 
 class UserCreationForm(forms.ModelForm):
@@ -65,3 +66,17 @@ class UserLoginForm(forms.Form):
 
 class VerifyCodeForm(forms.Form):
     code = forms.IntegerField(label='Verification Code')
+
+
+class UserAvatarForm(forms.ModelForm):
+    class Meta:
+        model = Avatar
+        fields = ['picture']
+
+    def clean_picture(self):
+        avatar = self.cleaned_data['picture']
+        if not avatar:
+            raise ValidationError('Please select a picture')
+
+        avatar_validator(file=avatar)
+        return process_image_validator(avatar)

@@ -14,4 +14,5 @@ urlpatterns = [
          name='user_reset_password_confirm'),
     path('passwordreset/complete/', views.UserResetPasswordCompleteView.as_view(),
          name='user_reset_password_complete'),
+    path('upload-avatar/', views.UserUploadAvatarView.as_view(), name='upload_avatar'),
 ]

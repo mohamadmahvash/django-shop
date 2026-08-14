@@ -31,6 +31,10 @@ ALLOWED_HOSTS = []
 # SITE ID
 SITE_ID = 1
 
+# MAX SIZE
+DATA_UPLOAD_MAX_MEMORY_SIZE = 4 * 1024 * 1024  # 4 MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 4 * 1024 * 1024  # 4 MB
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -179,7 +183,6 @@ CKEDITOR_CONFIGS = {
         "toolbar": "full",
     }
 }
-
 
 # GOOGLE APP PASSWORD
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

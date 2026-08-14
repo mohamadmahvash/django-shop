@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .forms import UserChangeForm, UserCreationForm
-from .models import User, OtpCode
+from .models import User, OtpCode , Avatar
 
 
 class UserAdmin(BaseUserAdmin):
@@ -87,3 +87,5 @@ admin.site.register(User, UserAdmin)
 @admin.register(OtpCode)
 class OtpCodeAdmin(admin.ModelAdmin):
     list_display = ["phone_number", 'code', 'created_at']
+
+admin.site.register(Avatar)

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
+from .validators import avatar_upload_path_validator
 from .managers import UserManager
 
 
@@ -31,3 +32,11 @@ class OtpCode(models.Model):
 
     def __str__(self):
         return f'{self.phone_number} - {self.code} - {self.created_at}'
+
+
+class Avatar(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    picture = models.ImageField(upload_to=avatar_upload_path_validator)
+
+    def __str__(self):
+        return self.user.full_name
