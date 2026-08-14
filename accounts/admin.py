@@ -13,12 +13,6 @@ class UserAdmin(BaseUserAdmin):
     list_display = ["email", "phone_number", "is_admin", "last_login"]
     list_filter = ["is_admin"]
 
-    # fieldsets = [
-    #     [None, {"fields": ["full_name", "email", "phone_number", "password"]}],
-    #     ["Permissions",
-    #      {"fields": ["is_active", "is_admin", "is_superuser", "last_login", "groups", "user_permissions"]}]
-    # ]
-
     add_fieldsets = [
         [None, {"fields": ["full_name", "email", "phone_number", "password1", "password2"]}],
     ]

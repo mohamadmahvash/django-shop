@@ -33,7 +33,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['full_name', 'email', 'phone_number', 'password', 'last_login','is_superuser']
+        fields = ['full_name', 'email', 'phone_number', 'password', 'last_login', 'is_superuser']
 
 
 class UserRegistrationForm(forms.Form):
@@ -59,7 +59,7 @@ class UserRegistrationForm(forms.Form):
 
 
 class UserLoginForm(forms.Form):
-    phone_number = forms.CharField(label='Phone Number', max_length=11)
+    phone_number = forms.CharField(label='phone_number')
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
 

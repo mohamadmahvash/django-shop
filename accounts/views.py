@@ -64,7 +64,7 @@ class UserRegistrationVerifyCodeView(View):
         if form.is_valid():
             cd = form.cleaned_data
             expiration_time = code_instance.created_at + timedelta(minutes=2)
-            if cd["code"] == code_instance.code and expiration_time < timezone.now():
+            if cd["code"] == code_instance.code and expiration_time > timezone.now():
                 User.objects.create_user(phone_number=user_session["phone_number"], email=user_session["email"]
                                          , full_name=user_session["full_name"], password=user_session["password"])
                 code_instance.delete()
