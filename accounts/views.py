@@ -14,6 +14,10 @@ from .forms import UserRegistrationForm, VerifyCodeForm, UserLoginForm, UserAvat
 from .models import OtpCode, User
 from utils import send_otp_code
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class UserRegisterView(View):
     form_class = UserRegistrationForm
@@ -25,6 +29,7 @@ class UserRegisterView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
+        logger.warning("register view")
         return render(request, self.template_name, {'form': self.form_class})
 
     def post(self, request):

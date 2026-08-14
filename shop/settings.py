@@ -191,3 +191,48 @@ EMAIL_HOST_PASSWORD = 'axcukxnuscdfooqo'
 EMAIL_HOST_USER = 'mohammadmahvash1@gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# LOGGING
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{name} {levelname} {asctime} {module} {message}',
+            'style': '{'
+        },
+        # 'simple': {
+        #     'format': '{ {levelname} {message}',
+        #     'style': '{'
+        # }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'logs/general.log',
+            'level': 'DEBUG',
+            'formatter': 'verbose',
+        },
+        'file_rotate': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'logs/app.log',
+            'maxBytes': 10 * 1024 * 1024,  # 10 MB
+            'backupCount': '5',
+        },
+    },
+    'loggers': {
+        # '': {
+        #     'level': 'DEBUG',
+        #     'handlers': ['file'],
+        # },
+        'accounts': {
+            'level': 'DEBUG',
+            'handlers': ['file'],
+            'propagate': True,
+        }
+    }
+}
