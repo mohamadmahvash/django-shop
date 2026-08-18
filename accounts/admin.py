@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils.safestring import mark_safe
 
 from .forms import UserChangeForm, UserCreationForm
-from .models import User, OtpCode , Avatar
+from .models import User, OtpCode, Avatar
 
 
 class UserAdmin(BaseUserAdmin):
@@ -88,4 +89,10 @@ admin.site.register(User, UserAdmin)
 class OtpCodeAdmin(admin.ModelAdmin):
     list_display = ["phone_number", 'code', 'created_at']
 
-admin.site.register(Avatar)
+
+@admin.register(Avatar)
+class AvatarAdmin(admin.ModelAdmin):
+    readonly_fields = ["avatar_pic"]
+
+    def avatar_pic(self, obj):
+        return mark_safe(f"<img src='{obj.picture.url}' width='{obj.picture.width}'/>")

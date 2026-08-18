@@ -225,10 +225,10 @@ LOGGING = {
         },
     },
     'loggers': {
-        # '': {
-        #     'level': 'DEBUG',
-        #     'handlers': ['file'],
-        # },
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['file'],
+        },
         'accounts': {
             'level': 'DEBUG',
             'handlers': ['file'],
