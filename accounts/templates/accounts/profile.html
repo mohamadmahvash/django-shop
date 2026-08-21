@@ -1,0 +1,63 @@
+{#{% extends 'base.html' %}#}
+{##}
+{#{% block content %}#}
+{##}
+{#    <p class="text-center">{{ user.full_name }}</p>#}
+{##}
+{#    <img src="{{ avatar.picture.url }}" width="{{ avatar.picture.width }}" >#}
+{##}
+{#    <br>#}
+{#    <a href="{% url 'accounts:upload_avatar' %}" class="btn btn-info">Upload Avatar</a>#}
+{##}
+{#{% endblock %}#}
+{#=============#}
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+
+                <div class="card shadow border-0 rounded-4">
+
+                    <div class="card-body text-center p-4">
+
+                        <img src="{{ avatar.picture.url }}"
+                             class="rounded-circle border border-3 border-primary shadow-sm mb-3"
+                             width="150"
+                             height="150"
+                             style="object-fit: fill;">
+
+                        <h3 class="fw-bold mb-1">
+                            {{ user.full_name }}
+                        </h3>
+
+                        <p class="text-muted">
+                            {{ user.email }}
+                        </p>
+                        <p class="text-muted">
+                            {{ user.phone_number }}
+                        </p>
+
+                        <hr>
+
+                        <div class="d-grid">
+                            <a href="{% url 'accounts:upload_avatar' %}"
+                               class="btn btn-primary rounded-pill">
+                                <i class="fa fa-camera me-2"></i>
+                                Upload Avatar
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

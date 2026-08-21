@@ -2,7 +2,7 @@ import random
 
 from datetime import timedelta
 from django.utils import timezone
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.views import View
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from .forms import UserRegistrationForm, VerifyCodeForm, UserLoginForm, UserAvatarForm
-from .models import OtpCode, User
+from .models import OtpCode, User, Avatar
 from utils import send_otp_code
 
 import logging
@@ -123,6 +123,11 @@ class UserLogoutView(LoginRequiredMixin, View):
         messages.success(request, 'you are logged out', extra_tags='success')
         return redirect("home:home")
 
+class UserProfileView(LoginRequiredMixin,View):
+    def get(self, request,user_id):
+        user = get_object_or_404(User, pk=user_id)
+        avatar = get_object_or_404(Avatar, user=user)
+        return render(request , 'accounts/profile.html',{'user':user,'avatar':avatar})
 
 class UserUploadAvatarView(LoginRequiredMixin, View):
     form_class = UserAvatarForm

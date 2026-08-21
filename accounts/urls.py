@@ -15,4 +15,5 @@ urlpatterns = [
     path('passwordreset/complete/', views.UserResetPasswordCompleteView.as_view(),
          name='user_reset_password_complete'),
     path('upload-avatar/', views.UserUploadAvatarView.as_view(), name='upload_avatar'),
+    path('profile/<int:user_id>/', views.UserProfileView.as_view(), name='user_profile'),
 ]
