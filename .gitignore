@@ -157,3 +157,6 @@ dmypy.json
 cython_debug/
 
 .idea/
+
+#static
+static/

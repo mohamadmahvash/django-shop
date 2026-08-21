@@ -1,18 +1,5 @@
-{#{% extends 'base.html' %}#}
-{##}
-{#{% block content %}#}
-{##}
-{#    <p class="text-center">{{ user.full_name }}</p>#}
-{##}
-{#    <img src="{{ avatar.picture.url }}" width="{{ avatar.picture.width }}" >#}
-{##}
-{#    <br>#}
-{#    <a href="{% url 'accounts:upload_avatar' %}" class="btn btn-info">Upload Avatar</a>#}
-{##}
-{#{% endblock %}#}
-{#=============#}
-
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -23,12 +10,20 @@
                 <div class="card shadow border-0 rounded-4">
 
                     <div class="card-body text-center p-4">
+                        {% if avatar and avatar.picture %}
 
-                        <img src="{{ avatar.picture.url }}"
-                             class="rounded-circle border border-3 border-primary shadow-sm mb-3"
-                             width="150"
-                             height="150"
-                             style="object-fit: fill;">
+                            <img src="{{ avatar.picture.url }}" alt="profile image"
+                                 class="rounded-circle border border-3 border-primary shadow-sm mb-3"
+                                 width="150"
+                                 height="150"
+                                 style="object-fit: fill;">
+                        {% else %}
+                            <img src="{% static 'image/blank-profile.png' %}" alt="profile blank image"
+                                 class="rounded-circle border border-3 border-primary shadow-sm mb-3"
+                                 width="150"
+                                 height="150"
+                                 style="object-fit: fill;">
+                        {% endif %}
 
                         <h3 class="fw-bold mb-1">
                             {{ user.full_name }}

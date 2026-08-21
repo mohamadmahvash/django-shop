@@ -126,7 +126,7 @@ class UserLogoutView(LoginRequiredMixin, View):
 class UserProfileView(LoginRequiredMixin,View):
     def get(self, request,user_id):
         user = get_object_or_404(User, pk=user_id)
-        avatar = get_object_or_404(Avatar, user=user)
+        avatar = Avatar.objects.filter(user=user).first()
         return render(request , 'accounts/profile.html',{'user':user,'avatar':avatar})
 
 class UserUploadAvatarView(LoginRequiredMixin, View):
